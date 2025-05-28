@@ -1,20 +1,39 @@
-# trabalho-redes
-Modelagem e análise de redes complexas para a A2
+# Modelagem de Redes - Trabalho A2 (Capítulo 3)
 
----
+Este repositório contém o trabalho da disciplina **Introdução à Modelagem (2025.1)** da EMAp, ministrada pelo Prof. Walter Sande. O objetivo é implementar e analisar diferentes modelos de geração e crescimento de redes, além de comparar suas propriedades.
 
-# Descrição do Repositório (GitHub)
+## Descrição do Trabalho
 
-**Título:**  
-`modelagem-redes-a2` - Implementação e análise de modelos de redes (Erdős-Rényi, Watts-Strogatz, Barabási-Albert, etc.)
+O trabalho está dividido em duas partes principais:
 
-**Descrição:**  
-Repositório para o trabalho da disciplina **Introdução à Modelagem (EMAp, 2025.1)**. Contém implementações em Python/MATLAB de modelos de geração e crescimento de redes, análises de centralidade e visualizações. Desenvolvido como parte da Avaliação A2 (Capítulo 3).
+### Parte A: Modelos de Geração de Redes
+1. **Modelo de Erdős-Rényi (Rede Aleatória)**: Gera uma rede onde cada aresta é criada com uma probabilidade fixa `p`.
+2. **Modelo de Watts-Strogatz (Mundo Pequeno)**: Parte de uma rede regular em anel e redireciona arestas com uma probabilidade dada.
+3. **Rede Aleatória com Comunidades**: Similar ao modelo de Erdős-Rényi, mas com probabilidades diferenciadas para ligações dentro e entre comunidades.
 
-**Tópicos (Tags):**  
-`redes-complexas`, `modelagem`, `python`, `networkx`, `matplotlib`, `ciência-de-dados`
+### Parte B: Modelos de Crescimento de Redes
+1. **Modelo de Anexação Uniforme**: Novos nós se conectam a nós existentes com probabilidade uniforme.
+2. **Modelo de Barabási-Albert (Anexação Preferencial)**: Novos nós preferem se conectar a nós já bem conectados.
+3. **Modelo de Price**: Combina anexação preferencial e uniforme, com uma proporção ajustável.
 
-**Detalhes Adicionais:**  
-- Linguagem: Python (preferencial) ou MATLAB.  
-- Licença: MIT.  
-- Inclui exemplos de visualização e um relatório detalhado.  
+### Tarefa Adicional (Item 2)
+Análise comparativa de quatro redes pré-definidas (Redes A, B, C e D) usando medidas de centralidade (grau, closeness, betweenness e PageRank) para nós específicos.
+
+## Requisitos
+- Python (com bibliotecas como NetworkX, Matplotlib, NumPy) ou MATLAB.
+- Opcional: Gephi para visualização avançada.
+
+## Estrutura do Repositório
+- `src/`: Códigos para gerar e analisar os modelos.
+  - `erdos_renyi.py`
+  - `watts_strogatz.py`
+  - `random_community.py`
+  - `growth_models.py`
+- `data/`: Arquivos de dados, como `redes.xlsx` com as listas de arestas.
+- `results/`: Visualizações, gráficos e métricas calculadas.
+- `report/`: Relatório detalhando metodologia, análises e conclusões.
+
+## Como Executar
+1. Clone o repositório:
+   ```bash
+   git clone [URL_DO_REPO]
