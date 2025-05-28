@@ -21,7 +21,6 @@ Análise comparativa de quatro redes pré-definidas (Redes A, B, C e D) usando m
 
 ## Requisitos
 - Python (com bibliotecas como NetworkX, Matplotlib, NumPy) ou MATLAB.
-- Opcional: Gephi para visualização avançada.
 
 ## Estrutura do Repositório
 - `src/`: Códigos para gerar e analisar os modelos.
@@ -36,4 +35,4 @@ Análise comparativa de quatro redes pré-definidas (Redes A, B, C e D) usando m
 ## Como Executar
 1. Clone o repositório:
    ```bash
-   git clone [URL_DO_REPO]
+   git clone [https://github.com/aliicerabello/trabalho-redes.git]
