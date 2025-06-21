@@ -10,43 +10,66 @@ Original file is located at
 import random
 import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
 
 def erdos_renyi(n, p):
+    # grafo vazio
+    G = nx.Graph()
+    G.add_nodes_from(range(n))  # nós de 0 até n-1
 
-  # grafo vazio
-  G = nx.Graph()
-  G.add_nodes_from(range(n))  # nós de 0 até n-1
+    # percorre todos os pares (i, j) com i < j
+    for i in range(n):
+        for j in range(i+1, n):
+            if random.random() < p:
+                G.add_edge(i, j)
 
-  # percorre todos os pares (i, j) com i < j
-  for i in range(n):
-      for j in range(i+1, n):
-          if random.random() < p:
-              G.add_edge(i, j)
+    # desenha o grafo
+    nx.draw(
+        G,
+        with_labels=True,
+        node_color='pink',
+        edge_color='black',
+        node_size=100,
+        font_size=8
+    )
+    plt.title(f"Erdős–Rényi: n={n}, p={p}")
+    plt.show()
 
-  # desenha o grafo
-  nx.draw(
-      G,
-      with_labels=True,
-      node_color='pink',
-      edge_color='black',
-      node_size=100,
-      font_size=8
-  )
-  plt.title(f"Erdos–Rényi: n={n}, p={p}")
-  plt.show()
-  graus = [grau for _, grau in G.degree()]
-  plt.hist(graus, bins=range(min(graus), max(graus)+2), align='left', color='skyblue', edgecolor='black')
-  plt.title(f"Distribuição de graus — Erdős–Rényi (n={n}, p={p})")
-  plt.xlabel("Grau do nó")
-  plt.ylabel("Número de nós")
-  plt.grid(True)
-  plt.show()
+    graus = [grau for _, grau in G.degree()]
+    plt.hist(graus, bins=range(min(graus), max(graus)+2), align='left', color='skyblue', edgecolor='black')
+    plt.title(f"Distribuição de graus — Erdős–Rényi (n={n}, p={p})")
+    plt.ylabel("Número de nós")
+    plt.grid(True)
+    plt.show()
 
-  print("Número de componentes conexas:", nx.number_connected_components(G))
-  print("Diâmetro (se conexo):", nx.diameter(G) if nx.is_connected(G) else "grafo desconexo")
-  print(f"Grau médio: {sum(graus)/len(graus):.2f}")
-  print(f"Coeficiente de clustering médio: {nx.average_clustering(G):.2f}")
-  print(f"Densidade: {nx.density(G):.2f}")
+    # metricas
+    print("Número de componentes conexas:", nx.number_connected_components(G))
+    print(f"Grau médio: {sum(graus) / len(graus):.2f}")
+    print(f"Coeficiente de clustering médio: {nx.average_clustering(G):.2f}")
+    print(f"Densidade: {nx.density(G):.2f}")
+    desvio = np.std([g for n, g in G.degree()])
+    print(f"Desvio padrão dos graus: {desvio:.2f}")
+    # caminho médio e diâmetro (tratando desconexão)
+    if nx.is_connected(G):
+        print(f"Caminho médio: {nx.average_shortest_path_length(G):.2f}")
+        print(f"Diâmetro: {nx.diameter(G)}")
+    else:
+        componentes = list(nx.connected_components(G))
+        maior_componente = max(componentes, key=len)
+        subgrafo = G.subgraph(maior_componente)
+        print("Grafo desconexo — analisando maior componente:")
+        print(f"Caminho médio: {nx.average_shortest_path_length(subgrafo):.2f}")
+        print(f"Diâmetro: {nx.diameter(subgrafo)}")
+    # hubs (definido como grau > média + 2 desvios padrão)
+    graus_lista = [g for n, g in G.degree()]
+    media_grau = np.mean(graus_lista)
+    desvio_grau = np.std(graus_lista)
+    limite_hub = media_grau + 2 * desvio_grau
+    hubs = [n for n, g in G.degree() if g >= limite_hub]
+    print(f"Hubs (grau >= {limite_hub:.2f}):", hubs)
+    # nó com maior grau
+    maior_no = max(G.degree, key=lambda x: x[1])
+    print(f"Nó com maior grau: {maior_no[0]} (grau {maior_no[1]})")
 
-
-erdos_renyi(25, 0.6)
+# Example usage
+erdos_renyi(500, 0.6)
