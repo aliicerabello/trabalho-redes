@@ -10,6 +10,7 @@ Original file is located at
 import random
 import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
 
 def watts_strogatz(n, k, p):
     if k % 2 != 0:
@@ -48,22 +49,41 @@ def watts_strogatz(n, k, p):
     plt.title(f"Watts–Strogatz (manual): n={n}, k={k}, p={p}")
     plt.show()
 
-    # métricas da rede
-    graus = [grau for _, grau in G.degree()]
-    print(f"Número de componentes conexas: {nx.number_connected_components(G)}")
-    if nx.is_connected(G):
-        print(f"Diâmetro: {nx.diameter(G)}")
-        print(f"Caminho médio: {nx.average_shortest_path_length(G):.2f}")
-    else:
-        print("Atenção: Grafo desconexo – não é possível calcular caminho médio e diâmetro.")
-
-    print(f"Grau médio: {sum(graus)/len(graus):.2f}")
-    print(f"Desvio padrão dos graus: {round((sum((x - sum(graus)/len(graus))**2 for x in graus)/len(graus))**0.5, 2)}")
+  # metricas
+    print("Número de componentes conexas:", nx.number_connected_components(G))
+    graus = [g for _, g in G.degree()]
+    print(f"Grau médio: {sum(graus) / len(graus):.2f}")
     print(f"Coeficiente de clustering médio: {nx.average_clustering(G):.2f}")
     print(f"Densidade: {nx.density(G):.2f}")
+    desvio = np.std([g for n, g in G.degree()])
+    print(f"Desvio padrão dos graus: {desvio:.2f}")
+    # caminho médio e diâmetro (tratando desconexão)
+    if nx.is_connected(G):
+        print(f"Caminho médio: {nx.average_shortest_path_length(G):.2f}")
+        print(f"Diâmetro: {nx.diameter(G)}")
+    else:
+        componentes = list(nx.connected_components(G))
+        maior_componente = max(componentes, key=len)
+        subgrafo = G.subgraph(maior_componente)
+        print("Grafo desconexo — analisando maior componente:")
+        print(f"Caminho médio: {nx.average_shortest_path_length(subgrafo):.2f}")
+        print(f"Diâmetro: {nx.diameter(subgrafo)}")
+    # hubs (definido como grau > média + 2 desvios padrão)
+    graus_lista = [g for n, g in G.degree()]
+    media_grau = np.mean(graus_lista)
+    desvio_grau = np.std(graus_lista)
+    limite_hub = media_grau + 2 * desvio_grau
+    hubs = [n for n, g in G.degree() if g >= limite_hub]
+    print(f"Hubs (grau >= {limite_hub:.2f}):", len(hubs))
+    # nó com maior grau
+    maior_no = max(G.degree, key=lambda x: x[1])
+    print(f"Nó com maior grau: {maior_no[0]} (grau {maior_no[1]})")
 
     # histograma da distribuição de graus
-    plt.hist(graus, bins=range(min(graus), max(graus)+2), align='left', color='skyblue', edgecolor='black')
+    plt.hist(graus,
+         bins='auto',
+         color='skyblue',
+         edgecolor='black')
     plt.title(f"Distribuição de graus — Watts–Strogatz (n={n}, k={k}, p={p})")
     plt.xlabel("Grau do nó")
     plt.ylabel("Número de nós")
@@ -72,4 +92,4 @@ def watts_strogatz(n, k, p):
 
     return G
 
-G_ws = watts_strogatz(n=25, k=6, p=0.6)
+G_ws = watts_strogatz(n=50, k=4, p=0.8)
