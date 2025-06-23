@@ -92,4 +92,4 @@ def watts_strogatz(n, k, p):
 
     return G
 
-G_ws = watts_strogatz(n=50, k=4, p=0.8)
+watts_strogatz(n=2000, k=500, p= 0.4)

@@ -7,16 +7,22 @@ Original file is located at
     https://colab.research.google.com/drive/1oFo-pqHFThbZMjMgY_a8W_d_2xN7U6ja
 """
 
+pip install python-louvain
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import random
 import numpy as np
+from collections import Counter
 
-def rede_comunidades(n=100, c=4, p_in=0.4, p_out=0.02):
+try:
+    import community as community_louvain  # pip install python-louvain
+except:
+    community_louvain = None
+
+def rede_comunidades(n=100, c=4, p_in=0.4, p_out=0.02, plot=True):
     """
-    rede com comunidades:
-    - p_in: probabilidade de conexão dentro da comunidade
-    - p_out: probabilidade de conexão entre comunidades
+    Gera uma rede com estrutura comunitária e calcula métricas estruturais.
     """
     G = nx.Graph()
     G.add_nodes_from(range(n))
@@ -36,48 +42,61 @@ def rede_comunidades(n=100, c=4, p_in=0.4, p_out=0.02):
                     G.add_edge(i, j)
 
     # visualização
-    cores = [comunidade[n] for n in G.nodes]
-    nx.draw(
-        G,
-        node_color=cores,
-        cmap=plt.cm.Set3,
-        with_labels=True,
-        node_size=80,
-        font_size=6,
-        edge_color='gray'
-    )
-    plt.title(f"Rede com comunidades (n={n}, c={c}, p_in={p_in}, p_out={p_out})")
-    plt.show()
+    if plot:
+        cores = [comunidade[n] for n in G.nodes]
+        nx.draw(
+            G,
+            node_color=cores,
+            cmap=plt.cm.Set3,
+            with_labels=False,
+            node_size=80,
+            edge_color='gray'
+        )
+        plt.title(f"Rede com comunidades (n={n}, c={c}, p_in={p_in}, p_out={p_out})")
+        plt.show()
 
-    # métricas
+    # métricas básicas
     graus = [grau for _, grau in G.degree()]
-
+    print(f"Número de nós: {G.number_of_nodes()}")
+    print(f"Número de arestas: {G.number_of_edges()}")
     print(f"Número de componentes conexas: {nx.number_connected_components(G)}")
+
     if nx.is_connected(G):
         print(f"Diâmetro: {nx.diameter(G)}")
         print(f"Caminho médio: {nx.average_shortest_path_length(G):.2f}")
     else:
-        print("Atenção: Grafo desconexo – não é possível calcular caminho médio e diâmetro.")
+        maior_componente = max(nx.connected_components(G), key=len)
+        Gc = G.subgraph(maior_componente)
+        print(f"Caminho médio (maior componente): {nx.average_shortest_path_length(Gc):.2f}")
+        print(f"Diâmetro (maior componente): {nx.diameter(Gc)}")
+        print(f"Tamanho do maior componente: {len(maior_componente)}")
 
     print(f"Grau médio: {np.mean(graus):.2f}")
     print(f"Desvio padrão dos graus: {np.std(graus):.2f}")
     print(f"Coeficiente de clustering médio: {nx.average_clustering(G):.2f}")
-    print(f"Densidade: {nx.density(G):.2f}")
+    print(f"Densidade: {nx.density(G):.4f}")
 
-    # histograma
-    plt.hist(
-        graus,
-        bins=range(min(graus), max(graus) + 2),
-        align='left',
-        color='skyblue',
-        edgecolor='black'
-    )
-    plt.title(f"Distribuição de graus — Rede com comunidades")
-    plt.xlabel("Grau")
-    plt.ylabel("Número de nós")
-    plt.grid(True)
-    plt.show()
+    # Modularidade com Louvain
+    if community_louvain is not None:
+        partition = community_louvain.best_partition(G)
+        modularidade = community_louvain.modularity(partition, G)
+        print(f"Modularidade (Louvain): {modularidade:.2f}")
+    else:
+        print("Biblioteca 'python-louvain' não instalada – modularidade não calculada.")
+
+    # Histograma dos graus
+    if plot:
+        plt.hist(
+            graus,
+            bins=range(min(graus), max(graus) + 2),
+            align='left',
+            color='skyblue',
+            edgecolor='black'
+        )
+        plt.title("Distribuição de graus — Rede com comunidades")
+        plt.xlabel("Grau")
+        plt.ylabel("Número de nós")
+        plt.grid(True)
+        plt.show()
 
     return G, comunidade
-
-G, comunidade = rede_comunidades(n=100, c=4, p_in=0.4, p_out=0.02)
