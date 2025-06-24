@@ -26,12 +26,14 @@ Análise comparativa de quatro redes pré-definidas (Redes A, B, C e D) usando m
 - `src/`: Códigos para gerar e analisar os modelos.
   - `erdos_renyi.py`
   - `watts_strogatz.py`
-  - `random_community.py`
-  - `growth_models.py`
+  - `rede_comunidades.py`
+  - `modelo_uniforme.py`
+  - `modelo_preferencial.py`
+  - `modelo_price.py`
+  - `rede_item2.py`
 - `data/`: Arquivos de dados, como `redes.xlsx` com as listas de arestas.
 - `results/`: Visualizações, gráficos e métricas calculadas.
 - `report/`: Relatório detalhando metodologia, análises e conclusões.
-
 ## Como Executar
 1. Clone o repositório:
    ```bash
