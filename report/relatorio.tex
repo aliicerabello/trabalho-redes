@@ -21,21 +21,21 @@
 
 \subsection*{Metodologia}
 
-\subsubsection{Rede 1}
+\paragraph{Rede 1}
 \begin{itemize}
     \item \textbf{Número de nós:} 25
     \item \textbf{Probabilidade de conexão:} \( p = 0{,}2 \)
     \item \textbf{Implementação:} manual em Python.
 \end{itemize}
 
-\subsubsection{Rede 2}
+\paragraph{Rede 2}
 \begin{itemize}
     \item \textbf{Número de nós:} 25
     \item \textbf{Probabilidade de conexão:} \( p = 0{,}6  \)
     \item \textbf{Implementação:} manual em Python.
 \end{itemize}
 
-\subsubsection{Rede 3}
+\paragraph{Rede 3}
 \begin{itemize}
     \item \textbf{Número de nós:} 25
     \item \textbf{Probabilidade de conexão:} \( p =  0{,} 8 \)
@@ -78,7 +78,7 @@ Decidi alterar a quantidade de nós com o propósito de ver como a rede se compo
 \subsection*{Métricas da Rede}
 
 As métricas são das redes em que fiz a visualização, não dos histogramas.
-\subsubsection{Rede 1}
+\paragraph{Rede 1}
 \begin{itemize}
     \item \textbf{Número de componentes conexas:} 1
     \item \textbf{Diâmetro:} 3
@@ -93,7 +93,7 @@ As métricas são das redes em que fiz a visualização, não dos histogramas.
 
 Como o desvio padrão é baixo, temos que boa parte dos nós tem de 5 a 6 contatos (grau médio de 5.6). O clustering é baixo (0.25), tendo um nó com um grau mais elevado (grau 9). É uma rede conectada, com um nó se destacando. Após melhor análise, vi que o possível hub não é um hub de verdade, devido à origem do modelo analisado.
 
-\subsubsection{Rede 2}
+\paragraph{Rede 2}
 \begin{itemize}
     \item \textbf{Número de componentes conexas:} 1
     \item \textbf{Diâmetro:} 2
@@ -106,9 +106,9 @@ Como o desvio padrão é baixo, temos que boa parte dos nós tem de 5 a 6 contat
     \item \textbf{Nó com maior grau:} 23 (grau 17)
 \end{itemize}
 
-Temos que é uma rede bem conectada novamente, com qualquer nó tá a, no máximo, dois saltos de distância de qualquer outro (diâmetro 2). Densa (densidade de 0.54, grau médio de 13.04), com mais da metade das possíveis conexões existentes. Tem um clustering moderado (0.53), o que sugere que os grupos tendem a ser bem interconectados. Desvio padrão baixo (2.07) e sem hubs definidos (nenhum nó com grau significativamente maior que a média) o que nos mostra uma rede homogênea, onde a maioria dos nós possui um número parecido de conexões. 
+Temos que é uma rede bem conectada novamente, com qualquer nó a, no máximo, dois saltos de distância de qualquer outro (diâmetro 2). Densa (densidade de 0.54, grau médio de 13.04), com mais da metade das possíveis conexões existentes. Tem um clustering moderado (0.53), o que sugere que os grupos tendem a ser bem interconectados. Desvio padrão baixo (2.07) e sem hubs definidos (nenhum nó com grau significativamente maior que a média) o que nos mostra uma rede homogênea, onde a maioria dos nós possui um número parecido de conexões. 
 
-\subsubsection{Rede 3}
+\paragraph{Rede 3}
 \begin{itemize}
     \item \textbf{Número de componentes conexas:} 1
     \item \textbf{Diâmetro:} 2
@@ -288,12 +288,6 @@ Na visualização dos histogramas, optei por escolher um k alto e uma quantidade
 \includegraphics[width=0.6\textwidth]{hist_ws_t3.png}
 \end{figure}
 
-\subsubsection{Rede 4}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.6\textwidth]{hist_ws_t4.png}
-\end{figure}
 Com $p = 0$, todos os nós têm exatamente o mesmo grau. A rede é totalmente regular e o histograma mostra apenas uma barra, o que diz que todos os nós estão conectados da mesma forma.
 Podemos perceber como os histogramas quando p tem um valor intermediário, o gráfico assume um formato de distribuição de Poisson.
 Quando aumentei para $p = 0{,}6$, os graus começaram a variar. O histograma ainda tem um pico central, mas já mostra mais diversidade. A rede continua organizada, mas com conexões mais aleatórias que diminuem as distâncias, o chamado regime de mundo pequeno.
